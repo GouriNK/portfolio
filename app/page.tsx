@@ -1,7 +1,12 @@
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <h1>Hello!</h1>
+    <div>
+      Portfolio
+    </div>
+    
   );
 }
