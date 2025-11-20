@@ -18,7 +18,6 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "_gnCodes", href: "/" },
   { label: "Projects", href: "/projects" },
-  { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Interests", href: "/interests" },
 ];
@@ -66,7 +65,7 @@ export default function Header() {
       {isOpen && (
         <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
           <nav className="container mx-auto px-6 py-3 space-y-2">
-            {navItems.map((item) => (
+            {centerLinks.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
