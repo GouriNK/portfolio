@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 type Project = {
   id: number;
@@ -12,6 +13,7 @@ type Project = {
   description: string;
   thumbnail: string;
   tags: string[];
+  link: string;
 };
 
 const projects: Project[] = [
@@ -22,6 +24,7 @@ const projects: Project[] = [
       "A personal portfolio built with Next.js, Tailwind CSS, and shadcn/ui.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Next.js", "Tailwind", "shadcn/ui"],
+    link: "/projects/portfolio-website",
   },
   {
     id: 2,
@@ -30,6 +33,7 @@ const projects: Project[] = [
       "A simple task manager app to track todos and productivity.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["React", "TypeScript", "UI/UX"],
+    link: "/projects/task-manager",
   },
   {
     id: 3,
@@ -38,6 +42,7 @@ const projects: Project[] = [
       "A dashboard showing live weather data and forecasts for multiple cities.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["API", "Dashboard", "Charts"],
+    link: "/projects/weather-dashboard",
   },
   {
     id: 4,
@@ -46,6 +51,7 @@ const projects: Project[] = [
       "A minimal e-commerce storefront with product listing and cart.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["E-commerce", "Next.js", "Stripe"],
+    link: "/projects/ecommerce-store",
   },
   {
     id: 5,
@@ -54,6 +60,7 @@ const projects: Project[] = [
       "A markdown-based blog platform with categories and search.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Content", "MDX", "SEO"],
+    link: "/projects/blog-platform",
   },
   {
     id: 6,
@@ -62,6 +69,7 @@ const projects: Project[] = [
       "An analytics overview page showing key KPIs and charts.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Analytics", "Dashboard", "Charts"],
+    link: "/projects/analytics-overview",
   },
   {
     id: 12,
@@ -70,6 +78,7 @@ const projects: Project[] = [
       "A personal portfolio built with Next.js, Tailwind CSS, and shadcn/ui.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Next.js", "Tailwind", "shadcn/ui"],
+    link: "/projects/portfolio-website-2",
   },
   {
     id: 22,
@@ -78,6 +87,7 @@ const projects: Project[] = [
       "A simple task manager app to track todos and productivity.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["React", "TypeScript", "UI/UX"],
+    link: "/projects/task-manager-2",
   },
   {
     id: 32,
@@ -86,6 +96,7 @@ const projects: Project[] = [
       "A dashboard showing live weather data and forecasts for multiple cities.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["API", "Dashboard", "Charts"],
+    link: "/projects/weather-dashboard-2",
   },
   {
     id: 42,
@@ -94,6 +105,7 @@ const projects: Project[] = [
       "A minimal e-commerce storefront with product listing and cart.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["E-commerce", "Next.js", "Stripe"],
+    link: "/projects/ecommerce-store-2",
   },
   {
     id: 52,
@@ -102,6 +114,7 @@ const projects: Project[] = [
       "A markdown-based blog platform with categories and search.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Content", "MDX", "SEO"],
+    link: "/projects/blog-platform-2",
   },
   {
     id: 62,
@@ -110,6 +123,7 @@ const projects: Project[] = [
       "An analytics overview page showing key KPIs and charts.",
     thumbnail: "/assets/dummy-project.png",
     tags: ["Analytics", "Dashboard", "Charts"],
+    link: "/projects/analytics-overview-2",
   },
 ];
 
@@ -130,6 +144,7 @@ export default function ProjectsPage() {
       return inTitle || inDescription || inTags;
     });
   }, [query]);
+  
     return (
     <section className="container mx-auto space-y-10">
       <div className="flex justify-center">
@@ -146,38 +161,45 @@ export default function ProjectsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProjects.map((project) => (
-          <Card
+          <Link
             key={project.id}
-            className="flex flex-col overflow-hidden border border-black/10 dark:border-[#CDCFC9]/30"
+            href={project.link}
+            className="group block"
           >
-            <div className="relative h-40 w-full">
-              <Image
-                src={project.thumbnail}
-                alt={project.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            <CardHeader>
-              <CardTitle className="text-lg">{project.title}</CardTitle>
-            </CardHeader>
-
-            <CardContent className="flex flex-col gap-4 flex-1">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                {project.description}
-              </p>
-
-              {/* Tags */}
-              <div className="mt-auto flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs">
-                    {tag}
-                  </Badge>
-                ))}
+            <Card
+              className="flex flex-col overflow-hidden border border-black/10 dark:border-[#CDCFC9]/30 
+                         transition hover:shadow-md hover:-translate-y-1"
+            >
+              <div className="relative h-40 w-full">
+                <Image
+                  src={project.thumbnail}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                />
               </div>
-            </CardContent>
-          </Card>
+
+              <CardHeader>
+                <CardTitle className="text-lg group-hover:underline">
+                  {project.title}
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="flex flex-col gap-4 flex-1">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  {project.description}
+                </p>
+
+                <div className="mt-auto flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
 
         {filteredProjects.length === 0 && (

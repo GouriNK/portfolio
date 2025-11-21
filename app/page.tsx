@@ -32,8 +32,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-
-        {/* RIGHT — Image */}
         <div className="flex justify-center md:justify-end">
           <Image
             src="/assets/your-image.jpg"
