@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${epilogue.className} min-h-screen flex flex-col bg-[var(--color-light-base)] dark:bg-black`}>
         <Providers>
           <Header/>
-          <main className="container mx-auto px-6 py-8 flex-1">{children}</main>
+          <main className="container mx-auto px-6 py-8 flex-1 pt-24">{children}</main>
           <Footer/>
         </Providers>
       </body>
