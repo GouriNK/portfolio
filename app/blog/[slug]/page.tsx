@@ -1,9 +1,19 @@
 import { notFound } from "next/navigation";
-import { blogPosts } from "../data";
+import { getPostBySlug, getAllSlugs } from "@/lib/posts";
+import ReactMarkdown from "react-markdown";
 
-export default async function BlogDetailPage({params}: {params: { slug: string }}) {
+export async function generateStaticParams() {
+  const slugs = getAllSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
+
+export default async function BlogDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug);
+  const post = getPostBySlug(slug);
 
   if (!post) return notFound();
 
@@ -17,9 +27,7 @@ export default async function BlogDetailPage({params}: {params: { slug: string }
         <span>{post.category}</span>
       </div>
 
-      <p className="text-gray-700 dark:text-gray-300 text-lg">
-        {post.summary}
-      </p>
+      <p className="text-gray-700 dark:text-gray-300 text-lg">{post.summary}</p>
 
       <div className="flex flex-wrap gap-2 pt-4">
         {post.tags.map((tag) => (
@@ -32,9 +40,9 @@ export default async function BlogDetailPage({params}: {params: { slug: string }
         ))}
       </div>
 
-      <p className="pt-6 text-gray-800 dark:text-gray-200">
-        This is where the full blog post content would go.
-      </p>
+      <article className="prose dark:prose-invert pt-6">
+        <ReactMarkdown>{post.content}</ReactMarkdown>
+      </article>
     </section>
   );
 }
