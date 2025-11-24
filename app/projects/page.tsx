@@ -1,213 +1,25 @@
-'use client';
+import { getFeaturedRepos } from "@/lib/github";
+import { ProjectsList } from "./projects-list";
 
-import { Input } from "@/components/ui/input";
-import { useState, useMemo } from "react";
-import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+export const revalidate = 3600;
 
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  thumbnail: string;
-  tags: string[];
-  link: string;
-};
+export default async function ProjectsPage() {
+  const repos = await getFeaturedRepos();
 
-const projects: Project[] = [
-  {
-    id: 1,
-    title: "Portfolio Website",
-    description:
-      "A personal portfolio built with Next.js, Tailwind CSS, and shadcn/ui.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Next.js", "Tailwind", "shadcn/ui"],
-    link: "/projects/portfolio-website",
-  },
-  {
-    id: 2,
-    title: "Task Manager",
-    description:
-      "A simple task manager app to track todos and productivity.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["React", "TypeScript", "UI/UX"],
-    link: "/projects/task-manager",
-  },
-  {
-    id: 3,
-    title: "Weather Dashboard",
-    description:
-      "A dashboard showing live weather data and forecasts for multiple cities.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["API", "Dashboard", "Charts"],
-    link: "/projects/weather-dashboard",
-  },
-  {
-    id: 4,
-    title: "E-commerce Store",
-    description:
-      "A minimal e-commerce storefront with product listing and cart.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["E-commerce", "Next.js", "Stripe"],
-    link: "/projects/ecommerce-store",
-  },
-  {
-    id: 5,
-    title: "Blog Platform",
-    description:
-      "A markdown-based blog platform with categories and search.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Content", "MDX", "SEO"],
-    link: "/projects/blog-platform",
-  },
-  {
-    id: 6,
-    title: "Analytics Overview",
-    description:
-      "An analytics overview page showing key KPIs and charts.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Analytics", "Dashboard", "Charts"],
-    link: "/projects/analytics-overview",
-  },
-  {
-    id: 12,
-    title: "Portfolio Website",
-    description:
-      "A personal portfolio built with Next.js, Tailwind CSS, and shadcn/ui.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Next.js", "Tailwind", "shadcn/ui"],
-    link: "/projects/portfolio-website-2",
-  },
-  {
-    id: 22,
-    title: "Task Manager",
-    description:
-      "A simple task manager app to track todos and productivity.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["React", "TypeScript", "UI/UX"],
-    link: "/projects/task-manager-2",
-  },
-  {
-    id: 32,
-    title: "Weather Dashboard",
-    description:
-      "A dashboard showing live weather data and forecasts for multiple cities.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["API", "Dashboard", "Charts"],
-    link: "/projects/weather-dashboard-2",
-  },
-  {
-    id: 42,
-    title: "E-commerce Store",
-    description:
-      "A minimal e-commerce storefront with product listing and cart.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["E-commerce", "Next.js", "Stripe"],
-    link: "/projects/ecommerce-store-2",
-  },
-  {
-    id: 52,
-    title: "Blog Platform",
-    description:
-      "A markdown-based blog platform with categories and search.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Content", "MDX", "SEO"],
-    link: "/projects/blog-platform-2",
-  },
-  {
-    id: 62,
-    title: "Analytics Overview",
-    description:
-      "An analytics overview page showing key KPIs and charts.",
-    thumbnail: "/assets/dummy-project.png",
-    tags: ["Analytics", "Dashboard", "Charts"],
-    link: "/projects/analytics-overview-2",
-  },
-];
-
-export default function ProjectsPage() {
-
-  const [query, setQuery] = useState("");
-
-  const filteredProjects = useMemo(() => {
-    const q = query.toLowerCase().trim();
-    if (!q) return projects;
-
-    return projects.filter((project) => {
-      const inTitle = project.title.toLowerCase().includes(q);
-      const inDescription = project.description.toLowerCase().includes(q);
-      const inTags = project.tags.some((tag) =>
-        tag.toLowerCase().includes(q)
-      );
-      return inTitle || inDescription || inTags;
-    });
-  }, [query]);
-  
-    return (
-    <section className="container mx-auto space-y-10">
-      <div className="flex justify-center">
-        <div className="w-full max-w-md">
-          <Input
-            type="text"
-            placeholder="Search projects..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="h-16 rounded-xl bg-white dark:bg-neutral-900 shadow-sm"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProjects.map((project) => (
-          <Link
-            key={project.id}
-            href={project.link}
-            className="group block"
-          >
-            <Card
-              className="flex flex-col overflow-hidden border border-black/10 dark:border-[#CDCFC9]/30 
-                         transition hover:shadow-md hover:-translate-y-1"
-            >
-              <div className="relative h-40 w-full">
-                <Image
-                  src={project.thumbnail}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              <CardHeader>
-                <CardTitle className="text-lg group-hover:underline">
-                  {project.title}
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="flex flex-col gap-4 flex-1">
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {project.description}
-                </p>
-
-                <div className="mt-auto flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <Badge key={tag} variant="outline" className="text-xs">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-
-        {filteredProjects.length === 0 && (
-          <p className="col-span-full text-center text-sm text-gray-600 dark:text-gray-400">
-            No projects found for “{query}”.
-          </p>
-        )}
-      </div>
+  return (
+    <section className="container mx-auto px-6 py-16 space-y-10">
+      <header className="space-y-2">
+        <h1 className="text-3xl font-semibold tracking-tight">
+          Projects
+        </h1>
+        <p className="text-sm text-gray-700 dark:text-gray-300">
+          A curated selection of my GitHub projects.
+        </p>
+        <p className="text-xs text-gray-600 dark:text-gray-400">
+          {repos.length} project{repos.length === 1 ? "" : "s"}
+        </p>
+      </header>
+      <ProjectsList repos={repos} />
     </section>
   );
 }
