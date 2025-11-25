@@ -1,7 +1,10 @@
+// app/blog/page.tsx
 import Link from "next/link";
-import { blogPosts } from "./data";
+import { getAllPosts } from "@/lib/posts";
 
 export default function BlogPage() {
+  const blogPosts = getAllPosts(); // runs on the server
+
   return (
     <section className="container mx-auto px-6 py-16 space-y-8">
       <header>
