@@ -7,6 +7,10 @@ import {
 } from "@langchain/google-genai";
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import {
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -41,6 +45,28 @@ export async function POST(req: NextRequest) {
     const model = new ChatGoogleGenerativeAI({
       model: "gemini-2.5-flash",  // valid as per LangChain docs
       temperature: 0.2,
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+        {
+          category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+         {
+          category: HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        }
+      ],
     });
 
     const systemPrompt = `
