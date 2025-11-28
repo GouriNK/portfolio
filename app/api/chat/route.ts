@@ -12,21 +12,101 @@ import {
   HarmBlockThreshold,
 } from "@google/generative-ai";
 
+// ---- Env ----
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const googleApiKey = process.env.GOOGLE_API_KEY!;
 
+// ---- Simple in-memory rate limiter ----
+const WINDOW_MS = 60_000; // 1 minute window
+const MAX_REQUESTS = 10;  // max 10 reqs per window per client
+
+type RateInfo = {
+  count: number;
+  windowStart: number;
+};
+
+const rateLimitMap = new Map<string, RateInfo>();
+
+function getClientId(req: NextRequest): string {
+  // Try to use IP from x-forwarded-for (Vercel / proxies)
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) {
+    const ip = xff.split(",")[0].trim();
+    if (ip) return `ip:${ip}`;
+  }
+
+  // Fallback: user-agent as a rough bucket
+  const ua = req.headers.get("user-agent") ?? "unknown";
+  return `ua:${ua}`;
+}
+
+function isRateLimited(clientId: string): boolean {
+  const now = Date.now();
+  const info = rateLimitMap.get(clientId);
+
+  if (!info) {
+    rateLimitMap.set(clientId, { count: 1, windowStart: now });
+    return false;
+  }
+
+  // Reset window if expired
+  if (now - info.windowStart > WINDOW_MS) {
+    rateLimitMap.set(clientId, { count: 1, windowStart: now });
+    return false;
+  }
+
+  if (info.count >= MAX_REQUESTS) {
+    return true;
+  }
+
+  info.count += 1;
+  rateLimitMap.set(clientId, info);
+  return false;
+}
+
+// ---- Route ----
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const userQuestion: string = body.question;
-
-    if (!userQuestion) {
-      return NextResponse.json({ error: "Missing question" }, { status: 400 });
+    if (!supabaseUrl || !supabaseAnonKey || !googleApiKey) {
+      console.error("Missing env vars");
+      return NextResponse.json(
+        { error: "Server config error" },
+        { status: 500 },
+      );
     }
 
+    const clientId = getClientId(req);
+    if (isRateLimited(clientId)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please slow down." },
+        { status: 429 },
+      );
+    }
+
+    const body = await req.json().catch(() => null);
+    const userQuestion: string | undefined = body?.question;
+
+    if (!userQuestion || typeof userQuestion !== "string") {
+      return NextResponse.json(
+        { error: "Missing question" },
+        { status: 400 },
+      );
+    }
+
+    // Basic input guard: no absurdly long prompts
+    if (userQuestion.length > 1000) {
+      return NextResponse.json(
+        { error: "Question too long" },
+        { status: 400 },
+      );
+    }
+
+    // ---- Supabase + embeddings ----
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     const embeddings = new GoogleGenerativeAIEmbeddings({
+      apiKey: googleApiKey,
       model: "text-embedding-004",
     });
 
@@ -38,12 +118,12 @@ export async function POST(req: NextRequest) {
 
     const relevantDocs = await vectorStore.similaritySearch(userQuestion, 5);
 
-    const context = relevantDocs
-      .map((d) => d.pageContent)
-      .join("\n\n---\n\n");
+    const context = relevantDocs.map((d) => d.pageContent).join("\n\n---\n\n");
 
+    // ---- Gemini chat with safety settings ----
     const model = new ChatGoogleGenerativeAI({
-      model: "gemini-2.5-flash",  // valid as per LangChain docs
+      apiKey: googleApiKey,
+      model: "gemini-2.5-flash",
       temperature: 0.2,
       safetySettings: [
         {
@@ -62,10 +142,10 @@ export async function POST(req: NextRequest) {
           category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
           threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
         },
-         {
+        {
           category: HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
           threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-        }
+        },
       ],
     });
 
@@ -76,7 +156,7 @@ export async function POST(req: NextRequest) {
 
       Context:
       ${context}
-      `;
+    `;
 
     const prompt = ChatPromptTemplate.fromMessages([
       ["system", systemPrompt],
@@ -91,8 +171,12 @@ export async function POST(req: NextRequest) {
     if (typeof response.content === "string") {
       answer = response.content;
     } else {
-      answer = response.content
-        .map((part: any) => (typeof part === "string" ? part : part.text ?? ""))
+      // content can be array of parts
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      answer = (response.content as any[])
+        .map((part) =>
+          typeof part === "string" ? part : part.text ?? "",
+        )
         .join(" ");
     }
 
