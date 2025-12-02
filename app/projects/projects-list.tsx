@@ -38,7 +38,7 @@ export function ProjectsList({ repos }: ProjectsListProps) {
             placeholder="Search projects by name, description, or tech..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="h-14 text-lg px-5 rounded-xl bg-white dark:bg-neutral-900 shadow-sm"
+            className="h-14 text-lg px-5 rounded-md bg-white dark:bg-neutral-900 shadow-sm"
           />
         </div>
       </div>
@@ -47,7 +47,7 @@ export function ProjectsList({ repos }: ProjectsListProps) {
         {filtered.map((repo) => (
           <article
             key={repo.id}
-            className="rounded-xl border border-black/10 dark:border-[#CDCFC9]/30 
+            className="rounded border border-black/10 dark:border-[#CDCFC9]/30 
                        bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm 
                        p-4 flex flex-col justify-between"
           >
