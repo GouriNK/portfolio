@@ -20,16 +20,11 @@ export default async function BlogDetailPage({
   return (
     <section className="container mx-auto px-6 py-16 space-y-6 max-w-3xl">
       <h1 className="text-4xl font-bold">{post.title}</h1>
-
-      <div className="flex gap-4 text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
         <time>{new Date(post.date).toLocaleDateString()}</time>
         <span>•</span>
         <span>{post.category}</span>
-      </div>
-
-      <p className="text-gray-700 dark:text-gray-300 text-lg">{post.summary}</p>
-
-      <div className="flex flex-wrap gap-2 pt-4">
+        <span>•</span>
         {post.tags.map((tag) => (
           <span
             key={tag}
@@ -39,7 +34,6 @@ export default async function BlogDetailPage({
           </span>
         ))}
       </div>
-
       <article className="prose dark:prose-invert pt-6">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </article>

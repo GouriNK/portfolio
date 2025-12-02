@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Repo } from "@/lib/github";
 import { Input } from "@/components/ui/input";
+import { Star } from "lucide-react";
 
 type ProjectsListProps = {
   repos: Repo[];
@@ -76,7 +77,10 @@ export function ProjectsList({ repos }: ProjectsListProps) {
                     {repo.language}
                   </span>
                 )}
-                <span>⭐ {repo.stargazers_count}</span>
+                <span className="inline-flex items-center gap-1 text-yellow-500">
+                  <Star size={14} className="fill-yellow-500 text-yellow-500" />
+                  {repo.stargazers_count}
+                </span>
               </div>
             </div>
 
