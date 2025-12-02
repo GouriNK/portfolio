@@ -21,17 +21,23 @@ const navItems: NavItem[] = [
   { label: "Blog", href: "/blog" },
   { label: "Interests", href: "/interests" },
 ];
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const homeLink = navItems[0];
   const centerLinks = navItems.slice(1);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-[var(--color-dark-blue)] dark:border-[var(--color-light-body)] bg-[var(--color-dark-blue)] dark:bg-black">
+    <header className="
+      fixed top-0 left-0 right-0 z-50 w-full
+      border-b border-[var(--color-dark-blue)] dark:border-[var(--color-light-body)]
+      bg-[var(--color-dark-blue)] dark:bg-black
+    ">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex-1">
           <Link
             href={homeLink.href}
-            className={`${rubikDoodle.className} text-[35px] text-[var(--color-light-body)] dark:text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]`}
+            className={`${rubikDoodle.className} text-[35px] text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]`}
           >
             {homeLink.label}
           </Link>
@@ -41,14 +47,16 @@ export default function Header() {
             <Link
               key={item.label}
               href={item.href}
-              className="text-[var(--color-light-body)] dark:text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]"
+              className="text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]"
             >
               {item.label}
             </Link>
           ))}
         </nav>
         <div className="flex-1 flex justify-end items-center space-x-3">
-          <ThemeToggle />
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             className="md:hidden inline-flex items-center justify-center p-2 rounded-md
@@ -65,18 +73,24 @@ export default function Header() {
       </div>
       {isOpen && (
         <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
-          <nav className="container mx-auto px-6 py-3 space-y-2">
+          <nav className="container mx-auto px-6 py-4 space-y-3">
             {centerLinks.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="block text-base text-[var(--color-light-body)] dark:text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]"
-                
                 onClick={() => setIsOpen(false)}
+                className="
+                  block text-base font-medium
+                  text-[var(--color-light-body)] hover:text-[var(--color-light-blue)]
+                  py-3 px-1
+                "
               >
                 {item.label}
               </Link>
             ))}
+            <div className="pt-3 border-t border-gray-300 dark:border-gray-700">
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       )}
