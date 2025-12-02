@@ -28,7 +28,6 @@ export default function RootLayout({
           <Header/>
           <main className="container mx-auto px-6 py-8 flex-1 pt-35">
             {children}
-            <ResumeChatbot />
           </main>
           <Footer/>
         </Providers>
