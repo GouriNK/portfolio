@@ -88,15 +88,21 @@ export default function ContactPage() {
           />
         </div>
 
-        <Button type="submit" className="w-full rounded bg-[var(--color-dark-blue)]
-                text-[var(--color-light-body)]
-                hover:text-[var(--color-light-blue)]
-                dark:bg-[var(--color-light-body)]
-                dark:text-[var(--color-dark-blue)]
-                dark:hover:text-[var(--color-dark-blue)]">
+        <Button
+          type="submit"
+          className="
+            w-full
+            px-6 py-6 rounded transition
+            bg-[var(--color-dark-blue)]
+            text-[var(--color-light-body)]
+            hover:text-[var(--color-light-blue)]
+            dark:bg-[var(--color-light-body)]
+            dark:text-[var(--color-dark-blue)]
+            dark:hover:text-[var(--color-dark-blue)]
+          "
+        >
           Send Message
         </Button>
-
         {status && (
           <p className="text-sm text-gray-600 dark:text-gray-300">{status}</p>
         )}

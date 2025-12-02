@@ -109,7 +109,7 @@ export default function ResumeChatbot() {
             alt="Profile illustration"
             width={400}
             height={400}
-            className="rounded-xl shadow-lg object-cover"
+            className="rounded shadow-lg object-cover"
           />
 
           {/* Blinking green dot + label in top-right corner */}
@@ -140,7 +140,16 @@ export default function ResumeChatbot() {
 
       {/* Chat window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 z-50 w-120 h-[70vh]">
+       <div
+              className="
+                fixed z-50
+                bottom-4 inset-x-4           /* mobile: centered, margin on both sides */
+                h-[70vh]
+                md:bottom-20 md:right-4      /* from md up: move to bottom-right */
+                md:left-auto                 /* ignore inset-x on md+ */
+                md:w-[26rem] lg:w-[30rem]    /* fixed width on larger screens */
+              "
+            >
           <Card className="shadow-xl border rounded-xl flex flex-col h-full overflow-hidden">
             <CardHeader className="py-3 px-4 flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm font-semibold text-[var(--color-dark-blue)] dark:text-[var(--color-light-body)]">
