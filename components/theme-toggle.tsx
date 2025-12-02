@@ -20,14 +20,15 @@ export default function ThemeToggle() {
         <Button
             size="sm"
             variant="ghost"
+            className="bg-[var(--color-light-blue)] text-[var(--color-dark-blue)] dark:bg-[var(--color-light-body)] dark:text-[#F3722C]"
             onClick={() => {
                 setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
             }}
-        >
+            >
             {resolvedTheme === 'dark' ? (
-                <SunIcon className="size-4 text-orange-300"></SunIcon>
+                <SunIcon className="size-4 text-[#F3722C]" />
             ) : (
-                <MoonIcon className="size-4 text-sky-950"></MoonIcon>
+                <MoonIcon className="size-4 text-[var(--color-dark-blue)]" />
             )}
             <span className="sr-only">Toggle theme</span>
         </Button>

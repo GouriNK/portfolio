@@ -7,7 +7,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white leading-tight">
-            Hi, I'm <span className="text-blue-600">Your Name</span>
+            Hi, I'm <span className="text-[var(--color-your-name)]">Your Name</span>
           </h1>
           <p className="text-lg text-gray-700 dark:text-gray-300">
             A frontend engineer who builds modern, elegant, and performant web
