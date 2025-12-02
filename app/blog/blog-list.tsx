@@ -42,10 +42,9 @@ export function BlogList({ posts }: BlogListProps) {
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium transition
-                  ${
-                    isActive
-                      ? "border-[var(--color-dark-blue)] bg-[var(--color-dark-blue)] text-white dark:border-white dark:bg-white dark:text-[var(--color-dark-blue)]"
-                      : "border-gray-300 text-gray-700 hover:border-[var(--color-dark-blue)]/70 hover:text-[var(--color-dark-blue)] dark:border-gray-600 dark:text-gray-200 dark:hover:border-white/80 dark:hover:text-white"
+                  ${isActive
+                    ? "border-[var(--color-dark-blue)] bg-[var(--color-dark-blue)] text-white dark:border-white dark:bg-white dark:text-[var(--color-dark-blue)]"
+                    : "border-gray-300 text-gray-700 hover:border-[var(--color-dark-blue)]/70 hover:text-[var(--color-dark-blue)] dark:border-gray-600 dark:text-gray-200 dark:hover:border-white/80 dark:hover:text-white"
                   }`}
               >
                 {cat}
