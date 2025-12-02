@@ -1,12 +1,12 @@
 ---
 title: "Ait radiantibus"
 date: "2025-02-10"
-category: "Development"
+category: "Development2"
 tags:
   - solar
   - bess
   - dashboards
-summary: "Short intro to my first post."
+summary: "Short intro to my first post.pressa Deianira quoque pulsat? Ait flumine sit ignis sepulcro humilesque inpleverunt, capillos, dum in? Hic nymphe sic Europam *sorte licuit* homini Ait flumine sit ignis sepulcro humilesque"
 ---
 
 

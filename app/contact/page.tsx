@@ -88,7 +88,12 @@ export default function ContactPage() {
           />
         </div>
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full rounded bg-[var(--color-dark-blue)]
+                text-[var(--color-light-body)]
+                hover:text-[var(--color-light-blue)]
+                dark:bg-[var(--color-light-body)]
+                dark:text-[var(--color-dark-blue)]
+                dark:hover:text-[var(--color-dark-blue)]">
           Send Message
         </Button>
 

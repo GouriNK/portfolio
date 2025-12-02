@@ -67,7 +67,7 @@ const socialLinks: SocialLink[] = [
 export default function Footer() {
    const year = new Date().getFullYear();
 return (
-    <footer className="w-full border-t border-black dark:border-[var(--color-light-base)] py-4">
+    <footer className="w-full border-t border-[var(--color-dark-blue)] dark:border-[var(--color-light-body)] py-4">
       <div className="container mx-auto flex items-center justify-between px-6">
         <p className="text-sm text-gray-600 dark:text-gray-400">
           © {year} ABC. All rights reserved.
@@ -78,7 +78,7 @@ return (
               key={social.name}
               href={social.href}
               aria-label={social.name}
-              className="hover:text-blue-600"
+              className="text-[var(--color-dark-blue)] hover:text-[var(--color-light-blue)] dark:text-[var(--color-light-body)]  dark:hover:text-[var(--color-light-blue)]"
               target="_blank"
               rel="noreferrer"
             >

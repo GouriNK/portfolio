@@ -4,6 +4,7 @@ import Providers from "@/components/providers";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Epilogue } from 'next/font/google';
+import ResumeChatbot from "@/components/resume-chatbot";
 
 const epilogue = Epilogue({
   subsets: ['latin'],
@@ -22,10 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${epilogue.className} min-h-screen flex flex-col bg-[var(--color-light-base)] dark:bg-black`}>
+      <body className={`${epilogue.className} min-h-screen flex flex-col bg-[var(--color-light-body)] dark:bg-black`}>
         <Providers>
           <Header/>
-          <main className="container mx-auto px-6 py-8 flex-1 pt-35">{children}</main>
+          <main className="container mx-auto px-6 py-8 flex-1 pt-35">
+            {children}
+          </main>
           <Footer/>
         </Providers>
       </body>
