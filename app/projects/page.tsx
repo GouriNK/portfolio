@@ -5,7 +5,6 @@ export const revalidate = 3600;
 
 export default async function ProjectsPage() {
   const repos = await getFeaturedRepos();
-  console.log(repos)
 
   return (
     <section className="container mx-auto px-6 py-16 space-y-10">
