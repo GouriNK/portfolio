@@ -26,7 +26,7 @@ export default function Header() {
   const homeLink = navItems[0];
   const centerLinks = navItems.slice(1);
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-black dark:border-[var(--color-light-body)] bg-[var(--color-dark-blue)] dark:bg-black">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-[var(--color-dark-blue)] dark:border-[var(--color-light-body)] bg-[var(--color-dark-blue)] dark:bg-black">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex-1">
           <Link

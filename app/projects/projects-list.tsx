@@ -48,7 +48,7 @@ export function ProjectsList({ repos }: ProjectsListProps) {
         {filtered.map((repo) => (
           <article
             key={repo.id}
-            className="rounded border border-black/10 dark:border-[#CDCFC9]/30 
+            className="rounded border border-[var(--color-dark-blue)]/10 dark:border-[#CDCFC9]/30 
                        bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm 
                        p-4 flex flex-col justify-between"
           >
